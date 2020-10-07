@@ -109,12 +109,11 @@ public class ArrayDeque<T> {
 		if (this.isEmpty()) {
 			System.out.println("Empty Deque!");
 		} else {
+			//System.out.println("total length: " + items.length);
 			for (int i = 0; i < size; i++) {
 				System.out.print(items[itemIdx(i)]);
 				System.out.print(" ");	
 			}
-			System.out.println();
-			System.out.println(java.util.Arrays.toString(items));
 		}
 		System.out.println();
 	}
@@ -125,12 +124,12 @@ public class ArrayDeque<T> {
 		if (this.isEmpty()) {
 			return null;
 		} else {
-			size -= 1;
-			checkLoiter();
 			T record = get(0);
-			items[nextFirst+1] = null;
+			items[itemIdx(0)] = null;
 			nextFirst += 1;
 			checkFirst();
+			size -= 1;
+			checkLoiter();
 			return record;
 		}		
 	}
@@ -141,13 +140,13 @@ public class ArrayDeque<T> {
 		if (this.isEmpty()) {
 			return null;
 		} else {
-			size -= 1;
-			checkLoiter();
 			//T record = get(-1);
-			T record = items[nextLast-1];
-			items[nextLast-1] = null;
+			T record = get(size-1);
+			items[itemIdx(size-1)] = null;
 			nextLast -= 1;
 			checkLast();
+			size -= 1;
+			checkLoiter();
 			return record;	
 		}
 	}
@@ -164,57 +163,54 @@ public class ArrayDeque<T> {
 
 	/** Test the class */
 	private static void main(String[] args) {
+		final int TST0 = 20;
+		final int TST1 = 50;
 		System.out.println("===Testing addFirst===");
 		ArrayDeque<Integer> a1 = new ArrayDeque<>();
-		a1.addFirst(8);
-		a1.addFirst(7);
-		a1.addFirst(6);
-		a1.addFirst(5);
-		a1.addFirst(4);
-		a1.addFirst(3);
-		a1.addFirst(2);
-		a1.addFirst(1);
-		a1.addFirst(0);
+		for (int i = 0; i < TST0; i++) {
+			a1.addFirst(i);
+		}
+		System.out.println("===Testing size===");
+		System.out.println("size: " + a1.size());
+		System.out.println("===Printing total items then the deque===");
+		System.out.println(java.util.Arrays.toString(a1.items));
+		System.out.println("nextFirst:" + a1.nextFirst + " nextLast:" + a1.nextLast);
 		a1.printDeque();
-		System.out.println("===Testing get(i)===");
-		System.out.println(a1.get(0));
-		System.out.println(a1.get(1));
-		System.out.println(a1.get(2));
-		System.out.println(a1.get(-1));
-		System.out.println(a1.get(-2));
-		System.out.println(a1.get(-3));
-		System.out.println(a1.get(a1.size-1));
-		System.out.println(a1.get(-a1.size));
+		
+		System.out.println("===Testing get===");
+		for (int i = 0; i < TST0; i++) {
+			System.out.print(a1.get(i)+" ");
+		}
+		System.out.println();
 		System.out.println("===Testing removeFirst===");
-		System.out.println(a1.removeFirst() + " removed");
+		for (int i = 0; i < TST0; i++) {
+			a1.removeFirst();
+		}
+		System.out.println("===Testing isEmpty===");
+		a1.printDeque();
+
+
+
+		System.out.println("===Testing addLast===");
+		for (int i = 0; i < TST1; i++) {
+			a1.addLast(i);
+		}
+		System.out.println("===Testing size===");
+		System.out.println("size: " + a1.size());
+		System.out.println("===Printing total items and the deque===");
+		System.out.println(java.util.Arrays.toString(a1.items));
+		System.out.println("nextFirst:" + a1.nextFirst + " nextLast:" + a1.nextLast);
+		a1.printDeque();
+		System.out.println("===Testing get===");
+		for (int i = 0; i < TST1; i++) {
+			System.out.print(a1.get(i)+" ");
+		}
+		System.out.println();
 		System.out.println("===Testing removeLast===");
-		System.out.println(a1.removeLast() + " removed");
-
-
-		//a1.printDeque();
-
-		// System.out.println("===Testing addLast===");
-		// ArrayDeque<Integer> a2 = new ArrayDeque<>();	
-		// a2.addLast(0);
-		// a2.addLast(1);
-		// a2.addLast(2);
-		// a2.addLast(3);
-		// a2.addLast(4);
-		// a2.addLast(5);
-		// a2.addLast(6);
-		// a2.addLast(7);
-		// a2.addLast(8);
-		// a2.addLast(9);
-		// a2.addLast(10);
-		// System.out.println("===Testing get(i)===");
-		// System.out.println(a2.get(0));
-		// System.out.println(a2.get(1));
-		// System.out.println(a2.get(a2.size()-1));
-		// System.out.println(a2.get(-a2.size()));
-		// System.out.println("===Testing removeLast===");
-		// System.out.println(a2.removeLast() + " removed");
-		// System.out.println(a2.removeLast() + " removed");
-		// System.out.println(a2.removeLast() + " removed");
-
+		for (int i = 0; i < TST1; i++) {
+			a1.removeLast();
+		}
+		System.out.println("===Testing isEmpty===");
+		a1.printDeque();
 	}
 }
