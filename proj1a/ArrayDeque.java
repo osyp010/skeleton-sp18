@@ -80,18 +80,19 @@ public class ArrayDeque<T> {
 	public void addFirst(T item) {
 		size += 1;	
 		checkFull();
-		items[nextFirst] = item;
 		nextFirst -= 1;
 		checkFirst();
+		items[itemIdx(0)] = item;
 	} 
 
 	/** Adds an item of type T to the back of the deque. */
 	public void addLast(T item) {
 		size += 1;
 		checkFull();
-		items[nextLast] = item;
 		nextLast += 1;
 		checkLast();
+		items[itemIdx(size-1)] = item;
+		
 	}
 
 	/** Returns true if deque is empty, false otherwise. */
@@ -141,8 +142,8 @@ public class ArrayDeque<T> {
 			return null;
 		} else {
 			//T record = get(-1);
-			T record = get(size-1);
-			items[itemIdx(size-1)] = null;
+			T record = get(size - 1);
+			items[itemIdx(size - 1)] = null;
 			nextLast -= 1;
 			checkLast();
 			size -= 1;
@@ -163,8 +164,8 @@ public class ArrayDeque<T> {
 
 	/** Test the class */
 	private static void main(String[] args) {
-		final int TST0 = 20;
-		final int TST1 = 50;
+		final int TST0 = 1;
+		final int TST1 = 4;
 		System.out.println("===Testing addFirst===");
 		ArrayDeque<Integer> a1 = new ArrayDeque<>();
 		for (int i = 0; i < TST0; i++) {
