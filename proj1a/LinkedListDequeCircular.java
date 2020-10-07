@@ -1,11 +1,11 @@
 public class LinkedListDequeCircular<T> {
 
 	private class TNode {
-		public TNode prev;
-		public T item;
-		public TNode next;
+		private TNode prev;
+		private T item;
+		private TNode next;
 
-		public TNode(TNode p, T i, TNode n) {
+		private TNode(TNode p, T i, TNode n) {
 			prev = p;
 			item = i;
 			next = n;
@@ -45,7 +45,7 @@ public class LinkedListDequeCircular<T> {
 	/** Returns true if deque is empty, false otherwise. */
 	public boolean isEmpty() {
 		
-		return (size==0? true:false);
+		return (size == 0 ? true : false);
 	}
 
 	/** Returns the number of items in the deque. */
@@ -54,12 +54,12 @@ public class LinkedListDequeCircular<T> {
 		return size;
 	} 
 
-	/** Prints the items in the deque from first to last, separated by a space. */
+	/** Prints the items in the deque from first to last, 
+	separated by a space. */
 	public void printDeque() {
 		if (this.isEmpty()) {
 			System.out.println("Empty Deque!");
-		}
-		else {
+		} else {
 			TNode p = sentinel.next;
 			while (p.item != null) {
 				System.out.print(p.item);
@@ -70,13 +70,13 @@ public class LinkedListDequeCircular<T> {
 		System.out.println();
 	}
 
-	/** Removes and returns the item at the front of the deque. If no such item exists, returns null. */
+	/** Removes and returns the item at the front of the 
+	deque. If no such item exists, returns null. */
 	public T removeFirst() {
 		if (this.isEmpty()) {
 			return null;
-		}
-		else {
-			size -=1 ;
+		} else {
+			size -=1;
 			TNode p = sentinel.next;
 			T record = p.item;
 			sentinel.next = p.next;
@@ -85,12 +85,12 @@ public class LinkedListDequeCircular<T> {
 		}
 	}
 
-	/** Removes and returns the item at the back of the deque. If no such item exists, returns null. */
+	/** Removes and returns the item at the back of the deque. 
+	If no such item exists, returns null. */
 	public T removeLast() {
 		if (this.isEmpty()) {
 			return null;
-		}
-		else {
+		} else {
 			size -= 1;
 			TNode p = sentinel.prev;
 			T record = p.item;
@@ -100,13 +100,15 @@ public class LinkedListDequeCircular<T> {
 		}
 	}
 
-	/** Gets the item at the given index, where 0 is the front, 1 is the next item, and so forth. If no such item exists, returns null. Must not alter the deque! */
+	/** Gets the item at the given index, where 0 is the 
+	front, 1 is the next item, and so forth. If no such item 
+	exists, returns null. Must not alter the deque! */
 	public T get(int index) {	
 		if ((index > size-1) || (index < 0)) {
 			return null;
 		}	
 		TNode p = sentinel.next;
-		for (int i=0; i<index; i++) {
+		for (int i = 0; i < index; i++) {
 			p = p.next;
 		}
 		return p.item;
@@ -114,23 +116,26 @@ public class LinkedListDequeCircular<T> {
 
 	/** Same as get, but uses recursion. */
 	public T getRecursive(int index) {
-		if ((index > size-1) || (index < 0)) {
+		if ((index > size - 1) || (index < 0)) {
 			return null;
 		}
+		// for every call, p set to first node
 		TNode p = sentinel.next;
+		return recHelper(p, index);	
+	}
+
+	private T recHelper(TNode p, int index) {
 		if (index == 0) {
 			return p.item;
-		}
-		else {
+		} else {
 			p = p.next;
-			getRecursive((index-1));
+			return recHelper(p, index - 1);
 		}
-		return p.item;
 	}
 
 	/** Test the class */
-	public static void main(String[] args) {
-		LinkedListDequeCircular<String> dl = new LinkedListDequeCircular<> ();
+	private static void main(String[] args) {
+		LinkedListDequeCircular<String> dl = new LinkedListDequeCircular<>();
 
 		//test addFirst() & addLast()
 		dl.addFirst("I");
