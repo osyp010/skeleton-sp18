@@ -1,5 +1,4 @@
 public class LinkedListDequeCircular<T> {
-
 	private class TNode {
 		private TNode prev;
 		private T item;
@@ -76,7 +75,7 @@ public class LinkedListDequeCircular<T> {
 		if (this.isEmpty()) {
 			return null;
 		} else {
-			size -=1;
+			size -= 1;
 			TNode p = sentinel.next;
 			T record = p.item;
 			sentinel.next = p.next;
@@ -104,7 +103,7 @@ public class LinkedListDequeCircular<T> {
 	front, 1 is the next item, and so forth. If no such item 
 	exists, returns null. Must not alter the deque! */
 	public T get(int index) {	
-		if ((index > size-1) || (index < 0)) {
+		if ((index > size - 1) || (index < 0)) {
 			return null;
 		}	
 		TNode p = sentinel.next;

@@ -1,5 +1,4 @@
 public class ArrayDeque<T> {
-	
 	private int size;
 	private T[] items;
 	private int nextFirst;
@@ -11,36 +10,62 @@ public class ArrayDeque<T> {
 	according position in items represented by index */
 	private int itemIdx(int index) {
 		if (index < 0) {
+		//negative index is not included in this projext
 			int itemIdx = index + nextLast;
-			if (itemIdx < 0) {itemIdx += items.length;}
+			if (itemIdx < 0) {
+				itemIdx += items.length;
+			}
 			return itemIdx;
 		}	
 		int itemIdx = index + nextFirst + 1;
-		if (itemIdx > items.length - 1) {itemIdx -= items.length;}
+		if (itemIdx > items.length - 1) {
+			itemIdx -= items.length;
+		}
 		return itemIdx;
 	}
 
 	/** loop front-pointer(nextFirst) back when it is out */
 	private void checkFirst() {
-		if (nextFirst == -1) {nextFirst = items.length - 1;}
+		if (nextFirst == -1) {
+			nextFirst = items.length - 1;
+		}
 	}
 
 	/** loop back-point(nextLack) front when it is out */
 	private void checkLast() {
-		if (nextLast == items.length) {nextLast = 0;}
+		if (nextLast == items.length) {
+			nextLast = 0;
+		}
 	}
 
 	/** half the deque-size when usage is lower than the proper rate */
 	private void checkLoiter() {
 		// Attention: int / int is always a  rounded int
 		if (size > 16 && size < LOITER_FACTOR * items.length) {
-			resize((int) (items.length / 2));}
+			resize((int) (items.length / 2));
+		}
 	}
 
 	/** enlarger the deque-size when size if full */
 	private void checkFull() {
 		if (size == items.length) {
-			resize((int) (size * FULL_FACTOR));}
+			resize((int) (size * FULL_FACTOR));
+		}
+	}
+
+	/** Change the Deque size*/
+	private void resize(int capacity) {
+		T[] newArr = (T[]) new Object[capacity];
+		if (nextFirst > nextLast || size == items.length) {
+			int first = itemIdx(0);
+			int newFirst = first + capacity - items.length;
+			System.arraycopy(items, 0, newArr, 0, nextLast);
+			System.arraycopy(items, first, newArr, newFirst, items.length - first);
+			nextFirst = newFirst - 1;
+		} else {
+			System.arraycopy(items, 0, newArr, 0, size);
+		}
+		items = newArr;
 	}
 
 	/** Creates an empty array deque. */	
@@ -49,19 +74,6 @@ public class ArrayDeque<T> {
 		nextFirst = 4;
 		nextLast = 5;
 		items = (T[]) new Object[8];
-	}
-
-	/** Change the Deque size*/
-	public void resize(int capacity) {
-		T[] newArr = (T[]) new Object[capacity];
-		if (nextFirst > nextLast || size == items.length) {
-			int first = itemIdx(0);
-			int newFirst = first + capacity - items.length;
-			System.arraycopy(items, 0, newArr, 0, nextLast);
-			System.arraycopy(items, first, newArr, newFirst, items.length - first);
-			nextFirst = newFirst - 1;
-		} else {System.arraycopy(items, 0, newArr, 0, size);}
-		items = newArr;
 	} 
 
 	/** Adds an item of type T to the front of the deque. */
@@ -98,10 +110,10 @@ public class ArrayDeque<T> {
 			System.out.println("Empty Deque!");
 		} else {
 			for (int i = 0; i < size; i++) {
-			System.out.print(items[itemIdx(i)]);
-			System.out.print(" ");	
+				System.out.print(items[itemIdx(i)]);
+				System.out.print(" ");	
 		}
-			//System.out.println(Arrays.toString(items));
+		//System.out.println(Arrays.toString(items));
 		System.out.println();
 		} 
 	}
@@ -130,8 +142,9 @@ public class ArrayDeque<T> {
 		} else {
 			size -= 1;
 			checkLoiter();
-			T record = get(-1);
-			items[itemIdx(-1)] = null;
+			//T record = get(-1);
+			T record = get(itemIdx(size - 1));
+			items[itemIdx(itemIdx(size - 1))] = null;
 			nextLast -= 1;
 			checkLast();
 			return record;	
@@ -150,7 +163,6 @@ public class ArrayDeque<T> {
 
 	/** Test the class */
 	private static void main(String[] args) {
-		
 		System.out.println("===Testing addFirst===");
 		ArrayDeque<Integer> a1 = new ArrayDeque<> ();;
 		a1.addFirst(8);
@@ -171,16 +183,16 @@ public class ArrayDeque<T> {
 		// System.out.println(a1.get(a1.size-1));
 		// System.out.println(a1.get(-a1.size));
 		System.out.println("===Testing removeFirst===");
-		System.out.println(a1.removeFirst()+" removed");
-		System.out.println(a1.removeFirst()+" removed");
-		System.out.println(a1.removeFirst()+" removed");
+		System.out.println(a1.removeFirst() + " removed");
+		System.out.println(a1.removeFirst() + " removed");
+		System.out.println(a1.removeFirst() + " removed");
 		System.out.println("===Testing removeLast===");
-		System.out.println(a1.removeLast()+" removed");
-		System.out.println(a1.removeLast()+" removed");
-		System.out.println(a1.removeLast()+" removed");
-		System.out.println(a1.removeLast()+" removed");
-		System.out.println(a1.removeLast()+" removed");
-		System.out.println(a1.removeLast()+" removed");
+		System.out.println(a1.removeLast() + " removed");
+		System.out.println(a1.removeLast() + " removed");
+		System.out.println(a1.removeLast() + " removed");
+		System.out.println(a1.removeLast() + " removed");
+		System.out.println(a1.removeLast() + " removed");
+		System.out.println(a1.removeLast() + " removed");
 
 		//a1.printDeque();
 
@@ -203,9 +215,9 @@ public class ArrayDeque<T> {
 		// System.out.println(a2.get(a2.size()-1));
 		// System.out.println(a2.get(-a2.size()));
 		// System.out.println("===Testing removeLast===");
-		// System.out.println(a2.removeLast()+" removed");
-		// System.out.println(a2.removeLast()+" removed");
-		// System.out.println(a2.removeLast()+" removed");
+		// System.out.println(a2.removeLast() + " removed");
+		// System.out.println(a2.removeLast() + " removed");
+		// System.out.println(a2.removeLast() + " removed");
 
 	}
 }
