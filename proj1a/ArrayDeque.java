@@ -1,6 +1,6 @@
 public class ArrayDeque<T> {
 	private int size;
-	public T[] items;
+	private T[] items;
 	private int nextFirst;
 	private int nextLast;
 	private final double FULL_FACTOR = 2;
@@ -9,27 +9,27 @@ public class ArrayDeque<T> {
 	/** Given the (valid) index from user's view, return its 
 	according position in items represented by index */
 	private int itemIdx(int index) {
-		/*if (index < 0) {
-		//negative index is not included in this projext
+		if (index < 0) {
 			int itemIdx = index + nextLast;
 			if (itemIdx < 0) {
 				itemIdx += items.length;
 			}
 			return itemIdx;
-		}*/	
+		}	
 		int itemIdx = index + nextFirst + 1;
 		if (itemIdx > items.length - 1) {
 			itemIdx -= items.length;
 		}
 		return itemIdx;
 	}
+
 	/** loop front-pointer(nextFirst) back when it is out */
 
 	private void checkFirst() {
 		if (nextFirst == -1) {
 			nextFirst += items.length;
 		}
-		if (nextFirst == items.length) {
+		else if (nextFirst == items.length) {
 			nextFirst = 0;
 		}
 	}
@@ -39,7 +39,7 @@ public class ArrayDeque<T> {
 		if (nextLast == items.length) {
 			nextLast = 0;
 		}
-		if (nextLast == -1) {
+		else if (nextLast == -1) {
 			nextLast += items.length;
 		}
 	}
@@ -63,8 +63,12 @@ public class ArrayDeque<T> {
 	private void shrink(int capacity) {
 		T[] newArr = (T[]) new Object[capacity];
 		int first = itemIdx(0);
+		//
+		System.out.println("shrinking to " + capacity);
+		//
 		if (first > itemIdx(size - 1)) {
 			int newFirst = first + capacity - items.length;
+			System.out.println("nl: " + nextLast);
 			System.arraycopy(items, 0, newArr, 0, nextLast);
 			System.arraycopy(items, first, newArr, newFirst, items.length - first);
 			nextFirst = newFirst - 1;
@@ -75,6 +79,7 @@ public class ArrayDeque<T> {
 		}
 		items = newArr;
 		checkFirst();
+		checkLast();
 	}
 
 	/** larger array */
@@ -85,6 +90,7 @@ public class ArrayDeque<T> {
 		System.arraycopy(items, 0, newArr, 0, nextLast);
 		System.arraycopy(items, first, newArr, newFirst, items.length - first);
 		nextFirst = newFirst - 1;
+
 		items = newArr;
 		checkFirst();
 	}
@@ -99,7 +105,7 @@ public class ArrayDeque<T> {
 
 	/** Adds an item of type T to the front of the deque. */
 	public void addFirst(T item) {
-		items[itemIdx(0)] = item;
+		items[nextFirst] = item;
 		nextFirst -= 1;
 		checkFirst();
 		size += 1;	
@@ -108,7 +114,7 @@ public class ArrayDeque<T> {
 
 	/** Adds an item of type T to the back of the deque. */
 	public void addLast(T item) {
-		items[itemIdx(size - 1)] = item;
+		items[nextLast] = item;
 		nextLast += 1;
 		checkLast();
 		size += 1;
@@ -161,8 +167,8 @@ public class ArrayDeque<T> {
 			return null;
 		} else {
 			//T record = get(-1);
-			T record = get(size - 1);
-			items[itemIdx(size - 1)] = null;
+			T record = get(-1);
+			items[itemIdx(-1)] = null;
 			nextLast -= 1;
 			checkLast();
 			size -= 1;

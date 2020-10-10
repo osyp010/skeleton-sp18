@@ -12,7 +12,7 @@ public class ArrayDequeTest {
             a.addFirst(i);
         }
         //System.out.println("addLast-" + last + "-numbers");
-        for (int i = 0; i < last; i++) {
+        for (int i = first + 1; i < last + first; i++) {
             a.addLast(i);
         }
         System.out.println("add-" + (last + first) + "-numbers");
