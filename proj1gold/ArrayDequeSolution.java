@@ -13,7 +13,7 @@ public class ArrayDequeSolution<Item> extends LinkedList<Item> {
     public Item getRecursive(int i) {
         return get(i);
     }
-
+    
     public Item removeFirst() {
         try {
             return super.removeFirst();
